@@ -2,8 +2,10 @@
 Created for Parkwood Piranhas in Durham Summer Swim League
 
 ## Usage
-1. Add CL2 files from the HyTek export ZIPs into the meets-cl2/ subfolder
-2. Run ./do-all
+(requires perl)
+1. Run ./do-all (to create meets-cl2 subdir)
+2. Add CL2 files from the HyTek export ZIPs into the meets-cl2/ subfolder
+3. Run ./do-all
 
 Output: best-times.tsv:
   - tab-delimited
