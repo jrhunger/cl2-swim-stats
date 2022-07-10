@@ -1,10 +1,14 @@
 #!/usr/bin/perl
-#Gwinn, Eleanor  5       X       25      free    UN08    2021/06/12      46.28   46.28
-#Philip, Fiona   4       X       25      free    UN08    2021/06/12      42.88   42.88
-
-#name    age     gender  distance        event   age-group       result
-#Bright, Max     14      M       50      free    1314    2022/06/11      30.40   30.40
-#Bright, Max     14      M       50      back    1314    2022/06/11      37.85   37.85
+#name	age	gender	distance	event	age-group	result
+#Anderson, Elijah	11	M	50	free	1112	2022/07/09	33.93	33.93
+#Anderson, Elijah	11	M	50	breast	1112	2022/07/09	43.92	43.92
+#Anderson, Jarah	14	F	50	free	1314	2022/07/09	33.87	33.87
+#Anderson, Jarah	14	F	50	breast	1314	2022/07/09	45.91	45.91
+#Anderson, Jarah	14	F	50	back	1314	2022/07/09	45.38	45.38
+#Bell, Thomas	8	M	25	free	0708	2022/07/09	39.93	39.93
+#Boyer, Elise	10	F	50	free	0910	2022/07/09	40.07	40.07
+#Boyer, Elise	10	F	50	breast	0910	2022/07/09	DQ	DQ
+#Boyer, Elise	10	F	50	fly	0910	2022/07/09	58.55	58.55
 
 
 while ($line = <>) {
@@ -14,6 +18,8 @@ while ($line = <>) {
   chomp $line;
   @line = split(/	/, $line);
   $dates{$line[6]} = 1;
+  ## UN for under in age group messes up sorting. change to 00 (UN06 -> 0006)
+  $line[5] =~ s/UN/00/;
   $swimmerevent = $line[0] . ":" . $line[3] . ":" . $line[4] . ":" . $line[2] . ":" . $line[5];
   # if they have a time
   if ( $line[8] =~ /^[0-9.]+/) { 
