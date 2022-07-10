@@ -1,0 +1,10 @@
+#!/bin/bash
+PWD=`pwd`
+YEAR=`basename $PWD`
+for file in `ls ${YEAR}*.cl2`
+do
+  ./cl2tsv.pl $file > `echo $file | sed "s/cl2/tsv/"`
+done
+
+./checkbest.pl ${YEAR}*.tsv > best-times.tsv
+
