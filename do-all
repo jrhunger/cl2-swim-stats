@@ -1,10 +1,37 @@
 #!/bin/bash
-PWD=`pwd`
-YEAR=`basename $PWD`
-for file in `ls ${YEAR}*.cl2`
+
+mkdir -p meets-cl2
+cl2files=`ls meets-cl2`
+if [[ -z $cl2files ]]; then
+  echo ""
+  echo "no files to process"
+  echo "add .CL2 meet results files in meets-cl2/ subfolder and try again"
+  echo ""
+  exit
+fi
+
+if [ -d tmp.old ]; then
+  /bin/rm -rf tmp.old
+fi
+if [ -d tmp ]; then
+  mv tmp tmp.old
+fi
+mkdir -p tmp
+for file in `ls meets-cl2`
 do
-  ./cl2tsv.pl $file > `echo $file | sed "s/cl2/tsv/"`
+  head -1 meets-cl2/$file | grep -q "^A01V3"
+  if [ $? -ne 0 ]; then
+    echo "meets-cl2/$file is not a valid CL2"
+  fi
+## B1 format
+#B11        2022 PWD vs WC                                                            Woodcroft                           0604202206042022            Y       N55
+  ## ignore year for summer-swim
+  # meetyear=`grep "^B11" $file | cut -c 126-129`
+  meetmmdd=`grep "^B11" meets-cl2/$file | cut -c 122-125`
+  meetname=`grep "^B11" meets-cl2/$file | cut -c 12-30 | sed "s/ //g"`
+  ./cl2tsv.pl meets-cl2/$file > tmp/${meetmmdd}.${meetname}.tsv
+  tsvfiles="$tsvfiles tmp/${meetmmdd}.${meetname}.tsv"
 done
 
-./checkbest.pl ${YEAR}*.tsv > best-times.tsv
-
+## the ls is there to sort the files by name == by date
+./checkbest.pl `ls $tsvfiles` > best-times.tsv

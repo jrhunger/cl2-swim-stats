@@ -21,6 +21,15 @@ while ($line = <>) {
     if ($best{$swimmerevent} > $line[8]) {
       $improvemeet{$swimmerevent}{$line[6]} = sprintf("%.2f", $best{$swimmerevent} - $line[8]);
       $improvetotal{$swimmerevent}{$line[6]} = sprintf("%.2f", $first{$swimmerevent} - $line[8]);
+      if ($improvetotal{$swimmerevent}{$line[6]} >= 10) {
+        if (! $gold{$swimmerevent}) {
+          $gold{$swimmerevent}{"previous"} = 0;
+        }
+        if ( $improvetotal{$swimmerevent}{$line[6]} - $gold{$swimmerevent}{"previous"} >= 10 ) {
+          $gold{$swimmerevent}{$line[6]} = $improvetotal{$swimmerevent}{$line[6]} - $gold{$swimmerevent}{"previous"};
+          $gold{$swimmerevent}{"previous"} = $improvetotal{$swimmerevent}{$line[6]};
+        } 
+      }
       $best{$swimmerevent} = $line[8];
     }
     if (! $first{$swimmerevent}) {
@@ -46,7 +55,7 @@ print "swimmer	gender	age-grp	event	";
 foreach $date (@dates) {
     printf "$date	firsttime	improvement	goldstroke	";
 }
-print "champs?	seed\n";
+print "champs?	best	season improvement\n";
 
 foreach $sevent (@swimmerevents) {
   @sevent = split(/:/, $sevent);
@@ -58,12 +67,15 @@ foreach $sevent (@swimmerevents) {
 #      print STDERR "$firstswim{$sevent} != $date\n";
       $first = ""
     }
-    printf "%s	%s	%s	%s	", $result{$sevent}{$date}, $first, $improvemeet{$sevent}{$date}, $improvetotal{$sevent}{$date};
+    printf "%s	%s	%s	%s	", $result{$sevent}{$date}, $first, $improvemeet{$sevent}{$date}, $gold{$sevent}{$date};
   }
+  ## print champs-eligible column
   if ( $legal{$sevent} >=2 ) { 
-    printf "yes	%s\n", $best{$sevent};
+    print "yes";
   }
-  else {
-    print "\n";
-  }
+  print "	";
+  ## print season best time
+  printf "%s	", $best{$sevent};
+  ## print season improvement
+  printf "%.2f\n", $first{$sevent} - $best{$sevent};
 }  

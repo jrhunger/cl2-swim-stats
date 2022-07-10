@@ -1,3 +1,4 @@
-*.tsv
-*.cl2
-*.old
+meets-cl2/
+tmp/
+tmp.old/
+best-times.tsv*

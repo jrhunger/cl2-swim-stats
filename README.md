@@ -1,5 +1,10 @@
-# best-times
-Input: multiple meet results in CL2 format
+# best-times - report best times, gold strokes, improvements, etc.
+Created for Parkwood Piranhas in Durham Summer Swim League
+
+## Usage
+1. Add CL2 files from the HyTek export ZIPs into the meets-cl2/ subfolder
+2. Run ./do-all
+
 Output: best-times.tsv:
   - tab-delimited
   - one line per swimmer per event
@@ -26,6 +31,8 @@ Output: best-times.tsv:
       - blank if not
     - seed (season best time = champs seed time)
     - season improvement (difference between first and best swims)
+
+Intermediate TSV files for each meet can be found in tmp/ subfolder after running.
     
 ## reference
 CL2:
